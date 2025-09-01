@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Landing Page</title>
+    <!-- Inter Font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for graphs and charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0c10;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Custom Keyframe Animations */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 25px rgba(99, 102, 241, 0.8);
+            }
+        }
+
+        @keyframes blobEffect {
+            0% {
+                transform: scale(1) translate(0%, 0%);
+            }
+            25% {
+                transform: scale(1.1) translate(10%, -10%);
+            }
+            50% {
+                transform: scale(0.9) translate(-10%, 10%);
+            }
+            75% {
+                transform: scale(1.2) translate(10%, 10%);
+            }
+            100% {
+                transform: scale(1) translate(0%, 0%);
+            }
+        }
+
+        /* Hero Section Particle Effect */
+        .particle {
+            position: absolute;
+            background-color: #6366f1;
+            border-radius: 50%;
+            animation: moveParticle 10s infinite linear alternate;
+        }
+
+        .particle:nth-child(1) { width: 30px; height: 30px; top: 10%; left: 20%; animation-duration: 12s; }
+        .particle:nth-child(2) { width: 40px; height: 40px; top: 30%; left: 70%; animation-duration: 15s; }
+        .particle:nth-child(3) { width: 25px; height: 25px; bottom: 20%; left: 45%; animation-duration: 10s; }
+        .particle:nth-child(4) { width: 35px; height: 35px; top: 50%; right: 15%; animation-duration: 13s; }
+        .particle:nth-child(5) { width: 20px; height: 20px; bottom: 5%; left: 80%; animation-duration: 16s; }
+        
+        @keyframes moveParticle {
+            from {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0.8;
+            }
+            to {
+                transform: translateY(200px) rotate(360deg) scale(1.2);
+                opacity: 0.5;
+            }
+        }
+
+        /* Apply the animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(20px);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-button {
+            animation: pulseGlow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        
+        /* Hero Section Blob Effect */
+        .hero-bg {
+            position: relative;
+            background-color: #0b0c10;
+        }
+
+        .hero-bg::before,
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            opacity: 0.4;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-bg::before {
+            background: linear-gradient(to right, #8b5cf6, #3b82f6);
+            top: -100px;
+            left: -100px;
+            animation: blobEffect 15s infinite alternate ease-in-out;
+        }
+
+        .hero-bg::after {
+            background: linear-gradient(to right, #f43f5e, #ec4899);
+            bottom: -100px;
+            right: -100px;
+            animation: blobEffect 18s infinite alternate-reverse ease-in-out;
+        }
+
+        /* Mobile menu animation */
+        .mobile-menu-container {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        .mobile-menu-container.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-md shadow-lg p-4 transition-all duration-300">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white tracking-wide">
+                AI<span class="text-indigo-500">.</span>Trends
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-6 lg:space-x-8">
+                <a href="#mission-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Mission</a>
+                <a href="#why-us-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Why Us</a>
+                <a href="#features-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Features</a>
+                <a href="#partners-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Partners</a>
+                <a href="#metrics-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Metrics</a>
+                <a href="#pricing-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Pricing</a>
+                <a href="#team-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Team</a>
+                <a href="#contact-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Contact</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="mobile-menu-container fixed top-0 right-0 h-full w-2/3 bg-gray-900 bg-opacity-90 backdrop-blur-md z-50 p-6 shadow-xl md:hidden">
+        <div class="flex justify-end">
+            <button id="close-button" class="text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="mt-8 flex flex-col items-center space-y-6">
+            <a href="#mission-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Mission</a>
+            <a href="#why-us-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Why Us</a>
+            <a href="#features-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Features</a>
+            <a href="#partners-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Partners</a>
+            <a href="#metrics-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Metrics</a>
+            <a href="#pricing-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Pricing</a>
+            <a href="#team-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Team</a>
+            <a href="#contact-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden min-h-screen flex items-center justify-center text-center p-6 hero-bg">
+        <!-- Particle Effects -->
+        <div class="particle"></div>
+        <div class="particle" style="background-color: #3b82f6;"></div>
+        <div class="particle" style="background-color: #f43f5e;"></div>
+        <div class="particle" style="background-color: #ec4899;"></div>
+        <div class="particle"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 text-white leading-tight animate-on-scroll" style="animation-delay: 0.2s;">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">The Future is Now.</span>
+            </h1>
+            <p class="text-lg md:text-xl mb-8 text-gray-400 animate-on-scroll" style="animation-delay: 0.4s;">
+                Explore the latest AI trends and how they are reshaping industries. Discover tools to build, analyze, and innovate with artificial intelligence.
+            </p>
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 cta-button animate-on-scroll" style="animation-delay: 0.6s;">
+                Get Started with AI
+            </button>
+        </div>
+    </header>
+
+    <!-- Our Mission Section -->
+    <section id="mission-section" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white animate-on-scroll">
+                Our Mission
+            </h2>
+            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto animate-on-scroll" style="animation-delay: 0.2s;">
+                Our purpose is to empower individuals and organizations by demystifying AI and providing accessible tools to harness its power. We believe that a deep understanding of AI is key to future success.
+            </p>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-us-section" class="py-20 px-6 bg-gray-900">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                Why Choose Our Platform
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Why Choose Us Card 1 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full mx-auto mb-4">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Expert Guidance</h3>
+                    <p class="text-gray-400">Our team of AI pioneers is dedicated to providing you with the best support and insights.</p>
+                </div>
+                <!-- Why Choose Us Card 2 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.2s;">
+                    <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full mx-auto mb-4">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h-4a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v11a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Community-Driven</h3>
+                    <p class="text-gray-400">Join a vibrant community of AI enthusiasts and professionals to share knowledge and ideas.</p>
+                </div>
+                <!-- Why Choose Us Card 3 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.4s;">
+                    <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-lime-500 to-green-500 rounded-full mx-auto mb-4">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Scalable Solutions</h3>
+                    <p class="text-gray-400">Our platform grows with you, from small projects to enterprise-level applications.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features-section" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                Key AI Capabilities
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full mx-auto mb-4">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Automation</h3>
+                    <p class="text-gray-400">Automate repetitive tasks and streamline workflows with intelligent AI models for greater efficiency.</p>
+                </div>
+                <!-- Feature Card 2 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full mx-auto mb-4">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.674a2 2 0 001.984-1.742l1.6-9.143A2 2 0 0016.326 4H7.674a2 2 0 00-1.984 2.258l1.6 9.143A2 2 0 009.663 17z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Personalization</h3>
+                    <p class="text-gray-400">Deliver highly personalized experiences and content to your audience using machine learning.</p>
+                </div>
+                <!-- Feature Card 3 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-fuchsia-500 to-rose-500 rounded-full mx-auto mb-4">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.433 9.382 5 7.915 5a4.5 4.5 0 00-.712 8.923M12 6.253c1.168-.82 2.618-1.253 4.085-1.253a4.5 4.5 0 01.712 8.923M12 6.253v13m0-13c-2.42 0-4.596 1.34-6 3.541m6-3.541a.541.541 0 011.662.664M12 6.253v13m0-13c2.42 0 4.596 1.34 6 3.541M12 19.253c-2.42 0-4.596-1.34-6-3.541m6 3.541a.541.541 0 01-1.662-.664M12 19.253c2.42 0 4.596-1.34 6-3.541" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Data Insights</h3>
+                    <p class="text-gray-400">Uncover hidden patterns and make data-driven decisions with powerful AI analytics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section id="partners-section" class="py-20 px-6 bg-gray-900">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white animate-on-scroll">
+                Our Trusted Partners
+            </h2>
+            <p class="text-lg text-gray-400 mb-12 max-w-3xl mx-auto animate-on-scroll">
+                We've partnered with industry-leading companies to provide you with the most powerful tools and resources for AI innovation.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center justify-center">
+                <img src="https://placehold.co/200x80/2f3a4b/e2e8f0?text=Tech+Labs" alt="Tech Labs Logo" class="mx-auto h-16 w-auto filter grayscale hover:grayscale-0 transition duration-300 animate-on-scroll">
+                <img src="https://placehold.co/200x80/2f3a4b/e2e8f0?text=Data+Corp" alt="Data Corp Logo" class="mx-auto h-16 w-auto filter grayscale hover:grayscale-0 transition duration-300 animate-on-scroll" style="animation-delay: 0.1s;">
+                <img src="https://placehold.co/200x80/2f3a4b/e2e8f0?text=Innovate+AI" alt="Innovate AI Logo" class="mx-auto h-16 w-auto filter grayscale hover:grayscale-0 transition duration-300 animate-on-scroll" style="animation-delay: 0.2s;">
+                <img src="https://placehold.co/200x80/2f3a4b/e2e8f0?text=Future+Solutions" alt="Future Solutions Logo" class="mx-auto h-16 w-auto filter grayscale hover:grayscale-0 transition duration-300 animate-on-scroll" style="animation-delay: 0.3s;">
+                <img src="https://placehold.co/200x80/2f3a4b/e2e8f0?text=Quantum+Mind" alt="Quantum Mind Logo" class="mx-auto h-16 w-auto filter grayscale hover:grayscale-0 transition duration-300 animate-on-scroll" style="animation-delay: 0.4s;">
+            </div>
+        </div>
+    </section>
+
+    <!-- New: Value Proposition Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-500">Harness the Power of AI.</span>
+            </h2>
+            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+                We provide the knowledge, tools, and community to help you navigate the AI landscape and build the future. From concept to deployment, we're with you every step of the way.
+            </p>
+        </div>
+    </section>
+
+    <!-- Key Metrics Section -->
+    <section id="metrics-section" class="py-20 px-6 bg-gray-900">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                AI Adoption Trends
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Pie Chart -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll">
+                    <h3 class="text-2xl font-bold text-white mb-4">AI Model Usage</h3>
+                    <div class="w-full flex justify-center items-center">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+                <!-- Bar Graph -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-bold text-white mb-4">Quarterly AI Platform Growth</h3>
+                    <div class="w-full flex justify-center items-center">
+                        <canvas id="barGraph"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="workflow-section" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                The AI Workflow
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll">
+                    <h3 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-blue-500">1</h3>
+                    <h4 class="text-xl font-semibold text-white mt-4 mb-2">Ideate</h4>
+                    <p class="text-gray-400">Define your challenge and ideate solutions with AI-powered brainstorming tools.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
+                    <h3 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">2</h3>
+                    <h4 class="text-xl font-semibold text-white mt-4 mb-2">Build</h4>
+                    <p class="text-gray-400">Train models and build applications with our intuitive, low-code AI development platform.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.4s;">
+                    <h3 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-rose-500">3</h3>
+                    <h4 class="text-xl font-semibold text-white mt-4 mb-2">Deploy</h4>
+                    <p class="text-gray-400">Seamlessly deploy your AI models to production and start gathering real-time data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing-section" class="py-20 px-6 bg-gray-900">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                Simple & Flexible Pricing
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Basic Plan -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <h3 class="text-2xl font-bold text-white mb-2">Basic</h3>
+                    <p class="text-gray-400 mb-6">For individual researchers</p>
+                    <div class="text-white text-5xl font-bold mb-4">
+                        $19<span class="text-xl text-gray-400 font-normal">/mo</span>
+                    </div>
+                    <ul class="text-gray-400 text-left mb-8">
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Access to core models
+                        </li>
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Standard API access
+                        </li>
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Community support
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 ease-in-out">
+                        Choose Plan
+                    </button>
+                </div>
+                <!-- Pro Plan -->
+                <div class="bg-indigo-600 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
+                    <p class="text-indigo-200 mb-6">For AI development teams</p>
+                    <div class="text-white text-5xl font-bold mb-4">
+                        $49<span class="text-xl text-indigo-200 font-normal">/mo</span>
+                    </div>
+                    <ul class="text-indigo-200 text-left mb-8">
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Advanced models & features
+                        </li>
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Priority API access
+                        </li>
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Dedicated support
+                        </li>
+                    </ul>
+                    <button class="w-full bg-white text-indigo-600 font-semibold py-3 px-8 rounded-full transition duration-300 ease-in-out">
+                        Choose Plan
+                    </button>
+                </div>
+                <!-- Enterprise Plan -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
+                    <p class="text-gray-400 mb-6">For large organizations</p>
+                    <div class="text-white text-5xl font-bold mb-4">
+                        <span class="text-2xl">Contact Us</span>
+                    </div>
+                    <ul class="text-gray-400 text-left mb-8">
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Custom AI solutions
+                        </li>
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            On-premise deployment
+                        </li>
+                        <li class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Dedicated account manager
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 ease-in-out">
+                        Contact Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials-section" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                What Our Experts Say
+            </h2>
+            <div class="flex overflow-x-auto gap-8 py-4 snap-x snap-mandatory scroll-p-4">
+                <!-- Testimonial Card 1 -->
+                <div class="flex-shrink-0 w-80 md:w-96 bg-gray-800 p-8 rounded-2xl shadow-xl snap-center animate-on-scroll">
+                    <p class="text-gray-300 italic mb-4">"The AI tools here are revolutionary. They've streamlined my research and allowed me to develop more accurate models in less time."</p>
+                    <p class="font-semibold text-white">- Dr. Evelyn Reed</p>
+                    <p class="text-sm text-gray-500">AI Researcher</p>
+                </div>
+                <!-- Testimonial Card 2 -->
+                <div class="flex-shrink-0 w-80 md:w-96 bg-gray-800 p-8 rounded-2xl shadow-xl snap-center animate-on-scroll">
+                    <p class="text-gray-300 italic mb-4">"The seamless integration of machine learning has dramatically improved our product's performance and user engagement. It's a game-changer."</p>
+                    <p class="font-semibold text-white">- Mark Chen</p>
+                    <p class="text-sm text-gray-500">Lead Machine Learning Engineer</p>
+                </div>
+                <!-- Testimonial Card 3 -->
+                <div class="flex-shrink-0 w-80 md:w-96 bg-gray-800 p-8 rounded-2xl shadow-xl snap-center animate-on-scroll">
+                    <p class="text-gray-300 italic mb-4">"Absolutely essential for anyone looking to stay ahead of the curve. The insights and data visualizations are second to none."</p>
+                    <p class="font-semibold text-white">- Jessica Lee</p>
+                    <p class="text-sm text-gray-500">Data Scientist</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section id="success-stories-section" class="py-20 px-6 bg-gray-900">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                AI in Action
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Case Study 1 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll">
+                    <h3 class="text-2xl font-bold text-white mb-2">TechCorp: Enhanced Predictive Analytics</h3>
+                    <p class="text-gray-400 mb-4">"By implementing our AI predictive models, TechCorp reduced their resource allocation time by 40% and improved forecasting accuracy by 30%."</p>
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out">Read Case Study</button>
+                </div>
+                <!-- Case Study 2 -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-bold text-white mb-2">Health Innovations: Revolutionized Diagnostics</h3>
+                    <p class="text-gray-400 mb-4">"Health Innovations utilized our AI-driven image analysis to increase their diagnostic speed and accuracy by over 50%, saving countless hours."</p>
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out">Read Case Study</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team-section" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                Meet the AI Pioneers
+            </h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Team Member 1 -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
+                    <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Jane Doe" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-indigo-500">
+                    <h3 class="text-xl font-semibold text-white">Jane Doe</h3>
+                    <p class="text-gray-400">Chief AI Officer</p>
+                </div>
+                <!-- Team Member 2 -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.2s;">
+                    <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="John Smith" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-purple-500">
+                    <h3 class="text-xl font-semibold text-white">John Smith</h3>
+                    <p class="text-gray-400">Lead ML Engineer</p>
+                </div>
+                <!-- Team Member 3 -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.4s;">
+                    <img src="https://randomuser.me/api/portraits/women/3.jpg" alt="Emily White" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-fuchsia-500">
+                    <h3 class="text-xl font-semibold text-white">Emily White</h3>
+                    <p class="text-gray-400">Head of Data Science</p>
+                </div>
+                <!-- Team Member 4 -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.6s;">
+                    <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="Michael Brown" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-rose-500">
+                    <h3 class="text-xl font-semibold text-white">Michael Brown</h3>
+                    <p class="text-gray-400">AI Product Manager</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="py-20 px-6 bg-gray-900">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                Latest AI Insights
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-xl animate-on-scroll">
+                    <img src="https://placehold.co/400x200/2f3a4b/e2e8f0?text=Generative+Art" alt="Generative Art" class="rounded-xl mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">From Pixels to Prose: The Generative AI Revolution</h3>
+                    <p class="text-gray-400 text-sm mb-4">A deep dive into how generative models are creating new possibilities for content creation and design.</p>
+                    <a href="#" class="text-indigo-400 hover:underline">Read More &rarr;</a>
+                </div>
+                <!-- Blog Post 2 -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
+                    <img src="https://placehold.co/400x200/2f3a4b/e2e8f0?text=AI+Ethics" alt="AI Ethics" class="rounded-xl mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Beyond the Code: Navigating the Ethics of AI</h3>
+                    <p class="text-gray-400 text-sm mb-4">Exploring the crucial conversations around bias, fairness, and accountability in artificial intelligence development.</p>
+                    <a href="#" class="text-indigo-400 hover:underline">Read More &rarr;</a>
+                </div>
+                <!-- Blog Post 3 -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.4s;">
+                    <img src="https://placehold.co/400x200/2f3a4b/e2e8f0?text=AI+in+Healthcare" alt="AI in Healthcare" class="rounded-xl mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Diagnosing Tomorrow: AI's Role in Healthcare</h3>
+                    <p class="text-gray-400 text-sm mb-4">How AI is being used to revolutionize patient care, diagnostics, and medical research.</p>
+                    <a href="#" class="text-indigo-400 hover:underline">Read More &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New: Call to Action Section -->
+    <section class="py-20 px-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-center rounded-2xl shadow-lg mx-6 md:mx-auto max-w-7xl animate-on-scroll">
+        <div class="animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                Ready to Build Your AI Future?
+            </h2>
+            <p class="text-xl mb-8 opacity-90">
+                Join thousands of innovators and start your journey with the latest AI trends today.
+            </p>
+            <button class="bg-white text-indigo-600 font-semibold py-4 px-10 rounded-full shadow-xl transition duration-300 ease-in-out transform hover:scale-105">
+                Start Your Free Trial
+            </button>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
+                Common Questions about AI
+            </h2>
+            <div class="space-y-4 text-left">
+                <!-- FAQ Item 1 -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-xl animate-on-scroll">
+                    <button class="w-full flex justify-between items-center text-white font-semibold focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg">What is artificial intelligence?</span>
+                        <span class="transform transition-transform duration-300 rotate-0" id="arrow1">+</span>
+                    </button>
+                    <p class="text-gray-400 mt-4 hidden" id="answer1">Artificial intelligence refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. It's an interdisciplinary science that includes machine learning, deep learning, and natural language processing.</p>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
+                    <button class="w-full flex justify-between items-center text-white font-semibold focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg">How will AI affect my job?</span>
+                        <span class="transform transition-transform duration-300 rotate-0" id="arrow2">+</span>
+                    </button>
+                    <p class="text-gray-400 mt-4 hidden" id="answer2">AI is not designed to replace human jobs, but rather to augment human capabilities. It will automate repetitive tasks, allowing people to focus on more creative, strategic, and complex problem-solving roles. Staying informed about AI trends is key to adapting.</p>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-xl animate-on-scroll" style="animation-delay: 0.4s;">
+                    <button class="w-full flex justify-between items-center text-white font-semibold focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg">What is the difference between AI, machine learning, and deep learning?</span>
+                        <span class="transform transition-transform duration-300 rotate-0" id="arrow3">+</span>
+                    </button>
+                    <p class="text-gray-400 mt-4 hidden" id="answer3">AI is the broad field of creating intelligent machines. Machine learning is a subset of AI that uses algorithms to learn from data. Deep learning is a more advanced subset of machine learning that uses neural networks to process information in a way inspired by the human brain.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-20 px-6 bg-gray-900">
+        <div class="max-w-4xl mx-auto text-center animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
+                Stay Ahead of the Curve
+            </h2>
+            <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
+                Join our newsletter to receive the latest AI research, trends, and breakthroughs directly in your inbox.
+            </p>
+            <form class="flex flex-col md:flex-row gap-4 items-center justify-center">
+                <input type="email" placeholder="Enter your email" class="w-full md:w-auto flex-grow p-4 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500">
+                <button type="submit" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-10 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact-section" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
+                Contact Our AI Team
+            </h2>
+            <p class="text-lg text-gray-400 mb-8">
+                Have a question about AI or our platform? We'd love to hear from you.
+            </p>
+            <form class="max-w-xl mx-auto space-y-4">
+                <input type="text" placeholder="Your Name" class="w-full p-4 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500">
+                <input type="email" placeholder="Your Email" class="w-full p-4 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500">
+                <textarea placeholder="Your Message" rows="5" class="w-full p-4 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500"></textarea>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-10 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="py-8 text-center text-gray-500">
+        <p>&copy; 2024 AI Trends Landing Page. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in slide-up animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+            });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+
+            // Mobile menu functionality
+            const menuButton = document.getElementById('menu-button');
+            const closeButton = document.getElementById('close-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.add('open');
+            });
+
+            closeButton.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+            
+            // Close mobile menu when a link is clicked
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+        });
+
+        // Toggle function for FAQ sections
+        function toggleFaq(button) {
+            const answer = button.nextElementSibling;
+            const arrow = button.querySelector('span:last-child');
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                arrow.style.transform = 'rotate(45deg)';
+            } else {
+                answer.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        // Chart.js initialization
+        window.onload = function() {
+            // Pie Chart
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Computer Vision', 'NLP', 'Robotics', 'Generative AI'],
+                    datasets: [{
+                        data: [45, 30, 15, 10],
+                        backgroundColor: ['#6366f1', '#a855f7', '#f43f5e', '#34d399'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#a1a1aa'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Bar Graph
+            const barCtx = document.getElementById('barGraph').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    datasets: [{
+                        label: 'New AI Platform Users',
+                        data: [250, 420, 680, 850],
+                        backgroundColor: '#3b82f6',
+                        borderColor: '#3b82f6',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a1a1aa'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a1a1aa'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#a1a1aa'
+                            }
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+</html>
