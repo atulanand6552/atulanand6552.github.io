@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Landing Page</title>
-    <!-- Inter Font from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js for graphs and charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -144,30 +141,57 @@
         .mobile-menu-container.open {
             transform: translateX(0);
         }
+
+        .nav-button, .mobile-nav-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+            color: #e2e8f0;
+            transition: color 0.2s ease-in-out;
+            position: relative;
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #6366f1;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .nav-button:hover::before {
+            width: 100%;
+        }
+
+        .nav-button:hover, .mobile-nav-button:hover {
+            color: #6366f1;
+        }
     </style>
 </head>
 <body class="selection:bg-indigo-500 selection:text-white">
 
-    <!-- Header Navigation -->
     <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-md shadow-lg p-4 transition-all duration-300">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-white tracking-wide">
                 AI<span class="text-indigo-500">.</span>Trends
             </a>
             
-            <!-- Desktop Navigation -->
             <div class="hidden md:flex space-x-6 lg:space-x-8">
-                <a href="#mission-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Mission</a>
-                <a href="#why-us-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Why Us</a>
-                <a href="#features-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Features</a>
-                <a href="#partners-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Partners</a>
-                <a href="#metrics-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Metrics</a>
-                <a href="#pricing-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Pricing</a>
-                <a href="#team-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Team</a>
-                <a href="#contact-section" class="relative text-gray-300 hover:text-white transition duration-200 ease-in-out before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-indigo-500 before:transition-all before:duration-300 hover:before:w-full">Contact</a>
+                <button data-target="mission-section" class="nav-button">Mission</button>
+                <button data-target="why-us-section" class="nav-button">Why Us</button>
+                <button data-target="features-section" class="nav-button">Features</button>
+                <button data-target="partners-section" class="nav-button">Partners</button>
+                <button data-target="metrics-section" class="nav-button">Metrics</button>
+                <button data-target="pricing-section" class="nav-button">Pricing</button>
+                <button data-target="team-section" class="nav-button">Team</button>
+                <button data-target="contact-section" class="nav-button">Contact</button>
             </div>
             
-            <!-- Mobile Menu Button -->
             <button id="menu-button" class="md:hidden text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -176,7 +200,6 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="mobile-menu-container fixed top-0 right-0 h-full w-2/3 bg-gray-900 bg-opacity-90 backdrop-blur-md z-50 p-6 shadow-xl md:hidden">
         <div class="flex justify-end">
             <button id="close-button" class="text-white focus:outline-none">
@@ -186,20 +209,18 @@
             </button>
         </div>
         <div class="mt-8 flex flex-col items-center space-y-6">
-            <a href="#mission-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Mission</a>
-            <a href="#why-us-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Why Us</a>
-            <a href="#features-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Features</a>
-            <a href="#partners-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Partners</a>
-            <a href="#metrics-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Metrics</a>
-            <a href="#pricing-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Pricing</a>
-            <a href="#team-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Team</a>
-            <a href="#contact-section" class="text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Contact</a>
+            <button data-target="mission-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Mission</button>
+            <button data-target="why-us-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Why Us</button>
+            <button data-target="features-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Features</button>
+            <button data-target="partners-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Partners</button>
+            <button data-target="metrics-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Metrics</button>
+            <button data-target="pricing-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Pricing</button>
+            <button data-target="team-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Team</button>
+            <button data-target="contact-section" class="mobile-nav-button text-white text-lg font-semibold hover:text-indigo-400 transition duration-200 ease-in-out">Contact</button>
         </div>
     </div>
 
-    <!-- Hero Section -->
     <header class="relative overflow-hidden min-h-screen flex items-center justify-center text-center p-6 hero-bg">
-        <!-- Particle Effects -->
         <div class="particle"></div>
         <div class="particle" style="background-color: #3b82f6;"></div>
         <div class="particle" style="background-color: #f43f5e;"></div>
@@ -219,7 +240,6 @@
         </div>
     </header>
 
-    <!-- Our Mission Section -->
     <section id="mission-section" class="py-20 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white animate-on-scroll">
@@ -231,14 +251,12 @@
         </div>
     </section>
 
-    <!-- Why Choose Us Section -->
     <section id="why-us-section" class="py-20 px-6 bg-gray-900">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 Why Choose Our Platform
             </h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Why Choose Us Card 1 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full mx-auto mb-4">
                         <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -248,7 +266,6 @@
                     <h3 class="text-xl font-semibold text-white mb-2">Expert Guidance</h3>
                     <p class="text-gray-400">Our team of AI pioneers is dedicated to providing you with the best support and insights.</p>
                 </div>
-                <!-- Why Choose Us Card 2 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.2s;">
                     <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full mx-auto mb-4">
                         <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -258,7 +275,6 @@
                     <h3 class="text-xl font-semibold text-white mb-2">Community-Driven</h3>
                     <p class="text-gray-400">Join a vibrant community of AI enthusiasts and professionals to share knowledge and ideas.</p>
                 </div>
-                <!-- Why Choose Us Card 3 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.4s;">
                     <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-lime-500 to-green-500 rounded-full mx-auto mb-4">
                         <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -272,14 +288,12 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section id="features-section" class="py-20 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 Key AI Capabilities
             </h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Feature Card 1 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full mx-auto mb-4">
                         <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -289,7 +303,6 @@
                     <h3 class="text-xl font-semibold text-white mb-2">Automation</h3>
                     <p class="text-gray-400">Automate repetitive tasks and streamline workflows with intelligent AI models for greater efficiency.</p>
                 </div>
-                <!-- Feature Card 2 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full mx-auto mb-4">
                         <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -299,7 +312,6 @@
                     <h3 class="text-xl font-semibold text-white mb-2">Personalization</h3>
                     <p class="text-gray-400">Deliver highly personalized experiences and content to your audience using machine learning.</p>
                 </div>
-                <!-- Feature Card 3 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <div class="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-fuchsia-500 to-rose-500 rounded-full mx-auto mb-4">
                         <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -313,7 +325,6 @@
         </div>
     </section>
 
-    <!-- Partners Section -->
     <section id="partners-section" class="py-20 px-6 bg-gray-900">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white animate-on-scroll">
@@ -332,7 +343,6 @@
         </div>
     </section>
 
-    <!-- New: Value Proposition Section -->
     <section class="py-20 px-6">
         <div class="max-w-7xl mx-auto text-center animate-on-scroll">
             <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
@@ -344,21 +354,18 @@
         </div>
     </section>
 
-    <!-- Key Metrics Section -->
     <section id="metrics-section" class="py-20 px-6 bg-gray-900">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 AI Adoption Trends
             </h2>
             <div class="grid md:grid-cols-2 gap-8">
-                <!-- Pie Chart -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll">
                     <h3 class="text-2xl font-bold text-white mb-4">AI Model Usage</h3>
                     <div class="w-full flex justify-center items-center">
                         <canvas id="pieChart"></canvas>
                     </div>
                 </div>
-                <!-- Bar Graph -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
                     <h3 class="text-2xl font-bold text-white mb-4">Quarterly AI Platform Growth</h3>
                     <div class="w-full flex justify-center items-center">
@@ -369,7 +376,6 @@
         </div>
     </section>
 
-    <!-- How It Works Section -->
     <section id="workflow-section" class="py-20 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
@@ -395,14 +401,12 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
     <section id="pricing-section" class="py-20 px-6 bg-gray-900">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 Simple & Flexible Pricing
             </h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Basic Plan -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <h3 class="text-2xl font-bold text-white mb-2">Basic</h3>
                     <p class="text-gray-400 mb-6">For individual researchers</p>
@@ -433,7 +437,6 @@
                         Choose Plan
                     </button>
                 </div>
-                <!-- Pro Plan -->
                 <div class="bg-indigo-600 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
                     <p class="text-indigo-200 mb-6">For AI development teams</p>
@@ -464,7 +467,6 @@
                         Choose Plan
                     </button>
                 </div>
-                <!-- Enterprise Plan -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
                     <p class="text-gray-400 mb-6">For large organizations</p>
@@ -499,26 +501,22 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section id="testimonials-section" class="py-20 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 What Our Experts Say
             </h2>
             <div class="flex overflow-x-auto gap-8 py-4 snap-x snap-mandatory scroll-p-4">
-                <!-- Testimonial Card 1 -->
                 <div class="flex-shrink-0 w-80 md:w-96 bg-gray-800 p-8 rounded-2xl shadow-xl snap-center animate-on-scroll">
                     <p class="text-gray-300 italic mb-4">"The AI tools here are revolutionary. They've streamlined my research and allowed me to develop more accurate models in less time."</p>
                     <p class="font-semibold text-white">- Dr. Evelyn Reed</p>
                     <p class="text-sm text-gray-500">AI Researcher</p>
                 </div>
-                <!-- Testimonial Card 2 -->
                 <div class="flex-shrink-0 w-80 md:w-96 bg-gray-800 p-8 rounded-2xl shadow-xl snap-center animate-on-scroll">
                     <p class="text-gray-300 italic mb-4">"The seamless integration of machine learning has dramatically improved our product's performance and user engagement. It's a game-changer."</p>
                     <p class="font-semibold text-white">- Mark Chen</p>
                     <p class="text-sm text-gray-500">Lead Machine Learning Engineer</p>
                 </div>
-                <!-- Testimonial Card 3 -->
                 <div class="flex-shrink-0 w-80 md:w-96 bg-gray-800 p-8 rounded-2xl shadow-xl snap-center animate-on-scroll">
                     <p class="text-gray-300 italic mb-4">"Absolutely essential for anyone looking to stay ahead of the curve. The insights and data visualizations are second to none."</p>
                     <p class="font-semibold text-white">- Jessica Lee</p>
@@ -528,20 +526,17 @@
         </div>
     </section>
 
-    <!-- Success Stories Section -->
     <section id="success-stories-section" class="py-20 px-6 bg-gray-900">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 AI in Action
             </h2>
             <div class="grid md:grid-cols-2 gap-8">
-                <!-- Case Study 1 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll">
                     <h3 class="text-2xl font-bold text-white mb-2">TechCorp: Enhanced Predictive Analytics</h3>
                     <p class="text-gray-400 mb-4">"By implementing our AI predictive models, TechCorp reduced their resource allocation time by 40% and improved forecasting accuracy by 30%."</p>
                     <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out">Read Case Study</button>
                 </div>
-                <!-- Case Study 2 -->
                 <div class="bg-gray-800 p-8 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
                     <h3 class="text-2xl font-bold text-white mb-2">Health Innovations: Revolutionized Diagnostics</h3>
                     <p class="text-gray-400 mb-4">"Health Innovations utilized our AI-driven image analysis to increase their diagnostic speed and accuracy by over 50%, saving countless hours."</p>
@@ -551,32 +546,27 @@
         </div>
     </section>
 
-    <!-- Team Section -->
     <section id="team-section" class="py-20 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 Meet the AI Pioneers
             </h2>
             <div class="grid md:grid-cols-4 gap-8">
-                <!-- Team Member 1 -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll">
                     <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Jane Doe" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-indigo-500">
                     <h3 class="text-xl font-semibold text-white">Jane Doe</h3>
                     <p class="text-gray-400">Chief AI Officer</p>
                 </div>
-                <!-- Team Member 2 -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.2s;">
                     <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="John Smith" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-purple-500">
                     <h3 class="text-xl font-semibold text-white">John Smith</h3>
                     <p class="text-gray-400">Lead ML Engineer</p>
                 </div>
-                <!-- Team Member 3 -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.4s;">
                     <img src="https://randomuser.me/api/portraits/women/3.jpg" alt="Emily White" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-fuchsia-500">
                     <h3 class="text-xl font-semibold text-white">Emily White</h3>
                     <p class="text-gray-400">Head of Data Science</p>
                 </div>
-                <!-- Team Member 4 -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 animate-on-scroll" style="animation-delay: 0.6s;">
                     <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="Michael Brown" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-rose-500">
                     <h3 class="text-xl font-semibold text-white">Michael Brown</h3>
@@ -586,28 +576,24 @@
         </div>
     </section>
 
-    <!-- Blog Section -->
     <section class="py-20 px-6 bg-gray-900">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 Latest AI Insights
             </h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Blog Post 1 -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-xl animate-on-scroll">
                     <img src="https://placehold.co/400x200/2f3a4b/e2e8f0?text=Generative+Art" alt="Generative Art" class="rounded-xl mb-4">
                     <h3 class="text-xl font-semibold text-white mb-2">From Pixels to Prose: The Generative AI Revolution</h3>
                     <p class="text-gray-400 text-sm mb-4">A deep dive into how generative models are creating new possibilities for content creation and design.</p>
                     <a href="#" class="text-indigo-400 hover:underline">Read More &rarr;</a>
                 </div>
-                <!-- Blog Post 2 -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
                     <img src="https://placehold.co/400x200/2f3a4b/e2e8f0?text=AI+Ethics" alt="AI Ethics" class="rounded-xl mb-4">
                     <h3 class="text-xl font-semibold text-white mb-2">Beyond the Code: Navigating the Ethics of AI</h3>
                     <p class="text-gray-400 text-sm mb-4">Exploring the crucial conversations around bias, fairness, and accountability in artificial intelligence development.</p>
                     <a href="#" class="text-indigo-400 hover:underline">Read More &rarr;</a>
                 </div>
-                <!-- Blog Post 3 -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-xl animate-on-scroll" style="animation-delay: 0.4s;">
                     <img src="https://placehold.co/400x200/2f3a4b/e2e8f0?text=AI+in+Healthcare" alt="AI in Healthcare" class="rounded-xl mb-4">
                     <h3 class="text-xl font-semibold text-white mb-2">Diagnosing Tomorrow: AI's Role in Healthcare</h3>
@@ -618,7 +604,6 @@
         </div>
     </section>
 
-    <!-- New: Call to Action Section -->
     <section class="py-20 px-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-center rounded-2xl shadow-lg mx-6 md:mx-auto max-w-7xl animate-on-scroll">
         <div class="animate-on-scroll">
             <h2 class="text-4xl md:text-5xl font-bold mb-4">
@@ -633,14 +618,12 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
     <section class="py-20 px-6">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white animate-on-scroll">
                 Common Questions about AI
             </h2>
             <div class="space-y-4 text-left">
-                <!-- FAQ Item 1 -->
                 <div class="bg-gray-800 p-6 rounded-xl shadow-xl animate-on-scroll">
                     <button class="w-full flex justify-between items-center text-white font-semibold focus:outline-none" onclick="toggleFaq(this)">
                         <span class="text-lg">What is artificial intelligence?</span>
@@ -648,7 +631,6 @@
                     </button>
                     <p class="text-gray-400 mt-4 hidden" id="answer1">Artificial intelligence refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. It's an interdisciplinary science that includes machine learning, deep learning, and natural language processing.</p>
                 </div>
-                <!-- FAQ Item 2 -->
                 <div class="bg-gray-800 p-6 rounded-xl shadow-xl animate-on-scroll" style="animation-delay: 0.2s;">
                     <button class="w-full flex justify-between items-center text-white font-semibold focus:outline-none" onclick="toggleFaq(this)">
                         <span class="text-lg">How will AI affect my job?</span>
@@ -656,7 +638,6 @@
                     </button>
                     <p class="text-gray-400 mt-4 hidden" id="answer2">AI is not designed to replace human jobs, but rather to augment human capabilities. It will automate repetitive tasks, allowing people to focus on more creative, strategic, and complex problem-solving roles. Staying informed about AI trends is key to adapting.</p>
                 </div>
-                <!-- FAQ Item 3 -->
                 <div class="bg-gray-800 p-6 rounded-xl shadow-xl animate-on-scroll" style="animation-delay: 0.4s;">
                     <button class="w-full flex justify-between items-center text-white font-semibold focus:outline-none" onclick="toggleFaq(this)">
                         <span class="text-lg">What is the difference between AI, machine learning, and deep learning?</span>
@@ -668,7 +649,6 @@
         </div>
     </section>
 
-    <!-- Newsletter Section -->
     <section class="py-20 px-6 bg-gray-900">
         <div class="max-w-4xl mx-auto text-center animate-on-scroll">
             <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
@@ -686,7 +666,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact-section" class="py-20 px-6">
         <div class="max-w-4xl mx-auto text-center animate-on-scroll">
             <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
@@ -732,6 +711,7 @@
             const menuButton = document.getElementById('menu-button');
             const closeButton = document.getElementById('close-button');
             const mobileMenu = document.getElementById('mobile-menu');
+            const navButtons = document.querySelectorAll('.nav-button, .mobile-nav-button');
 
             menuButton.addEventListener('click', () => {
                 mobileMenu.classList.add('open');
@@ -741,10 +721,23 @@
                 mobileMenu.classList.remove('open');
             });
             
-            // Close mobile menu when a link is clicked
-            document.querySelectorAll('#mobile-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('open');
+            // Smooth Scroll Functionality for navigation buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const targetId = button.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu after clicking a nav button
+                        if (mobileMenu.classList.contains('open')) {
+                            mobileMenu.classList.remove('open');
+                        }
+                    }
                 });
             });
         });
