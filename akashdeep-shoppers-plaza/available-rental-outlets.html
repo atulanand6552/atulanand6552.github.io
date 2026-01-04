@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akashdeep Shoppers Plaza - Vacant Shops</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --whatsapp-color: #25D366;
+            --call-color: #34495e;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --modal-bg-overlay: rgba(0, 0, 0, 0.9); 
+            --modal-bg-content: #1a1a1a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Updated Title Style */
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Grid Layout */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Card Styling */
+        .shop-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .shop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Card Image Area */
+        .card-image-wrapper {
+            height: 220px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card-image-wrapper:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-trigger {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-image-wrapper:hover .gallery-trigger {
+            opacity: 1;
+        }
+
+        .gallery-btn {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .photo-count {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            pointer-events: none;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .shop-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .shop-id {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        /* Footer & Buttons */
+        .card-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fafafa;
+            gap: 10px;
+            flex-wrap: wrap; 
+        }
+
+        .price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-right: auto; 
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-call {
+            background-color: var(--call-color);
+        }
+
+        .btn-whatsapp {
+            background-color: var(--whatsapp-color);
+        }
+
+        /* Full Screen Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+            background-color: var(--modal-bg-overlay);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--modal-bg-content);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        .modal-info h2 { margin-bottom: 5px; color: #fff; }
+        .modal-info p { color: #ccc; margin: 0; }
+
+        .close-btn {
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 30px;
+        }
+
+        .close-btn:hover { color: var(--accent-color); }
+
+        .modal-gallery-main {
+            width: 100%;
+            flex-grow: 1; 
+            background-color: #000; 
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .modal-gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+        }
+
+        .modal-thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            flex-shrink: 0;
+            justify-content: center;
+        }
+
+        .thumb {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 4px;
+            opacity: 0.5;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .thumb:hover, .thumb.active {
+            opacity: 1;
+            border-color: var(--accent-color);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Akashdeep Shoppers Plaza</h1>
+        <p>Available Commercial Spaces & Retail Outlets</p>
+    </header>
+
+    <div class="container">
+        <div id="shop-list" class="shop-grid"></div>
+    </div>
+
+    <div id="galleryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <div class="modal-info">
+                    <h2 id="modalTitle">Shop Title</h2>
+                    <p id="modalId">ID: 000</p>
+                </div>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+
+            <div class="modal-gallery-main">
+                <img id="mainDisplayImage" src="" alt="Main View">
+            </div>
+
+            <div id="thumbnailStrip" class="modal-thumbnails"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const CONTACT_NUMBER = "919153661058"; // Update this with your actual number
+
+        const shops = [
+            {
+                id: "S-101",
+                title: "Prime Corner Unit",
+                floor: "Ground Floor",
+                area: "1,200 sq.ft",
+                dimension: "30' x 40'",
+                price: "$3,500/mo",
+                images: [
+                    "https://placehold.co/1200x800/2c3e50/white?text=S101+Front+View+HD",
+                    "https://placehold.co/1200x800/e0e0e0/333?text=S101+Interior+1",
+                    "https://placehold.co/1200x800/e0e0e0/333?text=S101+Floor+Plan"
+                ]
+            },
+            {
+                id: "S-204",
+                title: "Compact Retail Space",
+                floor: "2nd Floor",
+                area: "450 sq.ft",
+                dimension: "15' x 30'",
+                price: "$1,200/mo",
+                images: [
+                    "https://placehold.co/1200x800/27ae60/white?text=S204+Entrance",
+                    "https://placehold.co/1200x800/e0e0e0/333?text=S204+Layout"
+                ]
+            },
+            {
+                id: "S-305",
+                title: "Large Showroom",
+                floor: "3rd Floor",
+                area: "2,500 sq.ft",
+                dimension: "50' x 50'",
+                price: "$5,000/mo",
+                images: [
+                    "https://placehold.co/1200x800/c0392b/white?text=S305+Wide+Angle",
+                    "https://placehold.co/1200x800/e0e0e0/333?text=S305+Detail+1"
+                ]
+            },
+            {
+                id: "S-102",
+                title: "Food Court Slot",
+                floor: "1st Floor",
+                area: "800 sq.ft",
+                dimension: "20' x 40'",
+                price: "$2,800/mo",
+                images: [
+                    "https://placehold.co/1200x800/f39c12/white?text=Food+Court+View",
+                    "https://placehold.co/1200x800/e0e0e0/333?text=Kitchen+Hookups"
+                ]
+            }
+        ];
+
+        const shopContainer = document.getElementById('shop-list');
+        const modal = document.getElementById('galleryModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalId = document.getElementById('modalId');
+        const mainDisplayImage = document.getElementById('mainDisplayImage');
+        const thumbnailStrip = document.getElementById('thumbnailStrip');
+
+        // --- RENDER LOGIC ---
+        function renderShops() {
+            let htmlContent = '';
+            shops.forEach((shop, index) => {
+                const mainThumb = shop.images[0];
+                const imageCount = shop.images.length;
+                
+                const callLink = `tel:+${CONTACT_NUMBER}`;
+                const waText = `Hi, I am interested in ${shop.title} (Unit ${shop.id}) at Akashdeep Shoppers Plaza`;
+                const waLink = `https://wa.me/${CONTACT_NUMBER}?text=${encodeURIComponent(waText)}`;
+
+                htmlContent += `
+                    <div class="shop-card">
+                        <div class="card-image-wrapper" onclick="openModal(${index})">
+                            <img src="${mainThumb}" alt="${shop.title}">
+                            <div class="gallery-trigger">
+                                <span class="gallery-btn">📷 View Photos</span>
+                            </div>
+                            <div class="photo-count">📸 ${imageCount} Images</div>
+                        </div>
+                        <div class="card-content">
+                            <span class="shop-id">Unit: ${shop.id}</span>
+                            <h3 class="shop-title">${shop.title}</h3>
+                            <div class="details-grid">
+                                <div><span class="detail-label">Floor</span><span class="detail-value">${shop.floor}</span></div>
+                                <div><span class="detail-label">Area</span><span class="detail-value">${shop.area}</span></div>
+                                <div><span class="detail-label">Dimensions</span><span class="detail-value">${shop.dimension}</span></div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <div class="price">${shop.price}</div>
+                            <div class="action-buttons">
+                                <a href="${callLink}" class="btn btn-call">📞 Call</a>
+                                <a href="${waLink}" target="_blank" class="btn btn-whatsapp">💬 WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            shopContainer.innerHTML = htmlContent;
+        }
+
+        // --- MODAL LOGIC ---
+        function openModal(index) {
+            const shop = shops[index];
+            modalTitle.textContent = shop.title;
+            modalId.textContent = "Unit ID: " + shop.id;
+            mainDisplayImage.src = shop.images[0];
+
+            let thumbsHTML = '';
+            shop.images.forEach((imgUrl, i) => {
+                thumbsHTML += `<img src="${imgUrl}" class="thumb ${i === 0 ? 'active' : ''}" onclick="changeMainImage(this, '${imgUrl}')">`;
+            });
+            thumbnailStrip.innerHTML = thumbsHTML;
+            
+            document.body.style.overflow = 'hidden';
+            modal.style.display = "block";
+        }
+
+        function changeMainImage(element, url) {
+            mainDisplayImage.src = url;
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        renderShops();
+    </script>
+</body>
+</html>
