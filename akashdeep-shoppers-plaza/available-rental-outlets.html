@@ -40,7 +40,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Updated Title Style */
         header h1 {
             font-size: 2.2rem;
             margin-bottom: 0.5rem;
@@ -348,54 +347,55 @@
         // --- CONFIGURATION ---
         const CONTACT_NUMBER = "919153661058"; // Update this with your actual number
 
+        // --- SHOP DATA (JSON Embedded) ---
         const shops = [
             {
-                id: "S-101",
-                title: "Prime Corner Unit",
-                floor: "Ground Floor",
-                area: "1,200 sq.ft",
-                dimension: "30' x 40'",
-                price: "$3,500/mo",
-                images: [
-                    "https://placehold.co/1200x800/2c3e50/white?text=S101+Front+View+HD",
-                    "https://placehold.co/1200x800/e0e0e0/333?text=S101+Interior+1",
-                    "https://placehold.co/1200x800/e0e0e0/333?text=S101+Floor+Plan"
+                "id": "S-101",
+                "title": "Prime Corner Unit",
+                "floor": "Ground Floor",
+                "area": "1,200 sq.ft",
+                "dimension": "30' x 40'",
+                "price": "$3,500/mo",
+                "images": [
+                    "https://placehold.co/1200x800/2c3e50/white?text=S101+Front+View",
+                    "https://placehold.co/1200x800/bdc3c7/2c3e50?text=S101+Interior",
+                    "https://placehold.co/1200x800/bdc3c7/2c3e50?text=S101+Floor+Plan"
                 ]
             },
             {
-                id: "S-204",
-                title: "Compact Retail Space",
-                floor: "2nd Floor",
-                area: "450 sq.ft",
-                dimension: "15' x 30'",
-                price: "$1,200/mo",
-                images: [
+                "id": "S-204",
+                "title": "Compact Retail Space",
+                "floor": "2nd Floor",
+                "area": "450 sq.ft",
+                "dimension": "15' x 30'",
+                "price": "$1,200/mo",
+                "images": [
                     "https://placehold.co/1200x800/27ae60/white?text=S204+Entrance",
-                    "https://placehold.co/1200x800/e0e0e0/333?text=S204+Layout"
+                    "https://placehold.co/1200x800/bdc3c7/2c3e50?text=S204+Layout"
                 ]
             },
             {
-                id: "S-305",
-                title: "Large Showroom",
-                floor: "3rd Floor",
-                area: "2,500 sq.ft",
-                dimension: "50' x 50'",
-                price: "$5,000/mo",
-                images: [
+                "id": "S-305",
+                "title": "Large Showroom",
+                "floor": "3rd Floor",
+                "area": "2,500 sq.ft",
+                "dimension": "50' x 50'",
+                "price": "$5,000/mo",
+                "images": [
                     "https://placehold.co/1200x800/c0392b/white?text=S305+Wide+Angle",
-                    "https://placehold.co/1200x800/e0e0e0/333?text=S305+Detail+1"
+                    "https://placehold.co/1200x800/bdc3c7/2c3e50?text=S305+Detail"
                 ]
             },
             {
-                id: "S-102",
-                title: "Food Court Slot",
-                floor: "1st Floor",
-                area: "800 sq.ft",
-                dimension: "20' x 40'",
-                price: "$2,800/mo",
-                images: [
+                "id": "S-102",
+                "title": "Food Court Slot",
+                "floor": "1st Floor",
+                "area": "800 sq.ft",
+                "dimension": "20' x 40'",
+                "price": "$2,800/mo",
+                "images": [
                     "https://placehold.co/1200x800/f39c12/white?text=Food+Court+View",
-                    "https://placehold.co/1200x800/e0e0e0/333?text=Kitchen+Hookups"
+                    "https://placehold.co/1200x800/bdc3c7/2c3e50?text=Kitchen+Hookups"
                 ]
             }
         ];
@@ -484,6 +484,7 @@
             }
         }
 
+        // Initialize immediately (no loading wait needed)
         renderShops();
     </script>
 </body>
